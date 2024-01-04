@@ -1,0 +1,46 @@
+.stimulus-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0px;
+  grid-auto-rows: minmax(100px, auto):
+}
+
+.top-left {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 340px;
+}
+
+.top-right {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 340px;
+}
+
+.mid-left {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.mid-right {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.bottom-left {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+.bottom-right {
+    grid-column: 2;
+    grid-row: 3;
+}
+
+.mid-left img, .mid-right img {
+    width: 100px;
+}
+
+.bottom-left img, .bottom-right img {
+    width: 200px;
+}

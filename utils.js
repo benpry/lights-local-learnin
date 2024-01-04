@@ -27,12 +27,33 @@ function range(size, startAt = 0) {
 }
 
 function formatStimulus(s) {
-  let stimulusString = "<p>There's a rumor going around...</p>";
+  let stimulusString = stimulusTemplate;
+  let i = 1;
   for (const [key, value] of Object.entries(s)) {
-    stimulusString += `<p>${stimulusSentences[value].replace(
-      "%NAME%",
-      names[key],
-    )}</p>`;
+    stimulusString = stimulusString.replace(
+      `%TEXT${i}%`,
+      `<p>${stimulusSentences[value].replace("%NAME%", names[key])}</p>`,
+    );
+    i++;
   }
+
+  i = 1;
+  for (const [key, value] of Object.entries(s)) {
+    stimulusString = stimulusString.replace(
+      `%TRUTH${i}%`,
+      value === 1 ? "yes" : value === 0 ? "no" : "question-mark",
+    );
+    i++;
+  }
+
+  i = 1;
+  for (const [key, value] of Object.entries(s)) {
+    stimulusString = stimulusString.replace(
+      `%NAME${i}%`,
+      names[key].toLowerCase(),
+    );
+    i++;
+  }
+
   return stimulusString;
 }
