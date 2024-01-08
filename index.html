@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html style="height: 100%">
   <head>
     <title>Learning Experiment</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -14,13 +14,18 @@
     <script src="jspsych/plugin-survey-text.js"></script>
     <link href="jspsych/jspsych.css" rel="stylesheet" type="text/css" />
     <link href="custom.css" rel="stylesheet" type="text/css" />
+    <link href="timer.css" rel="stylesheet" type="text/css" />
   </head>
-  <body class="jspsych-display-element">
+  <body style="margin: 0px; height: 100%; width: 100%">
     <script src="stimuli.js"></script>
     <script src="utils.js"></script>
     <script src="constants.js"></script>
+    <script src="timer.js"></script>
     <script src="experiment.js"></script>
-    <div id="timer"></div>
-    <div id="jspsych-target" class="jspsych-display-element"></div>
+    <div
+      id="jspsych-target"
+      class="jspsych-display-element jspsych-content-wrapper"
+      style="margin: 0px; height: 100%; width: 100%"
+    ></div>
   </body>
 </html>

@@ -1,4 +1,11 @@
-function compileTimeline() {
+const conditionNames = {
+  0: "unspeeded",
+  1: "speeded",
+  2: "scaffolded",
+};
+const trialDuration = 3000;
+
+function compileTimeline(condition) {
   // pre-load stimuli
   const preLoad = {
     type: jsPsychPreload,
@@ -21,8 +28,8 @@ function compileTimeline() {
     type: jsPsychInstructions,
     pages: [consentText],
     show_clickable_nav: true,
+    button_label_next: "I agree",
   };
-
   const instructions = {
     type: jsPsychInstructions,
     pages: instructionPages,
@@ -38,13 +45,10 @@ function compileTimeline() {
       prompt: "<p>Press space to continue.</p>",
     };
   });
-  shuffle(learningTrials);
 
   const doneLearningMessage = {
     type: jsPsychInstructions,
-    pages: [
-      "<p class='instructions-text'>You have finished the observing. Press 'Next' to begin predicting who knows about new rumors.</p>",
-    ],
+    pages: doneLearningPages,
     show_clickable_nav: true,
     allow_previous: false,
   };
@@ -56,9 +60,10 @@ function compileTimeline() {
       stimulus: formatStimulus(s),
       choices: ["n", "y"],
       prompt: `<p>Press "y" for yes, "n" for no.</p>`,
+      on_load: condition == "speeded" ? startTimer : null,
+      trial_duration: condition == "speeded" ? trialDuration : null,
     };
   });
-  shuffle(testTrials);
 
   const postExperimentSurvey = {
     type: jsPsychSurveyText,
@@ -89,6 +94,9 @@ function compileTimeline() {
     name: "strategy",
   };
 
+  shuffle(learningTrials);
+  shuffle(testTrials);
+
   return [
     preLoad,
     consent,
@@ -100,8 +108,7 @@ function compileTimeline() {
   ];
 }
 
-const timeline = compileTimeline();
-
+// get the condition from the URL
 const jsPsych = initJsPsych({
   on_finish: function (data) {
     proliferate.submit({
@@ -109,6 +116,12 @@ const jsPsych = initJsPsych({
       condition: "goofing around",
     });
   },
+  display_element: "jspsych-target",
 });
+
+const conditionInt = jsPsych.data.getURLVariable("condition");
+const condition = conditionNames[conditionInt];
+
+const timeline = compileTimeline(condition);
 
 jsPsych.run(timeline);

@@ -44,3 +44,13 @@
 .bottom-left img, .bottom-right img {
     width: 200px;
 }
+
+.instructions-text {
+  width: 60ch;
+  text-align: justify;
+}
+
+.consent-text {
+  width: 80ch;
+  text-align: justify;
+}
