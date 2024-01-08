@@ -32,7 +32,7 @@ function compileTimeline(condition) {
   };
   const instructions = {
     type: jsPsychInstructions,
-    pages: instructionPages,
+    pages: getInstructionPages(condition),
     show_clickable_nav: true,
   };
 
