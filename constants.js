@@ -34,7 +34,7 @@ const getInstructionPages = (condition) => {
     );
   }
   instructionPages[1] = instructionPages[1]
-    .concat(`<p class="instructions-text">You will earn a bonus of <strong>1¢ for every correct answer.</strong></p>
+    .concat(`<p class="instructions-text">You will earn a bonus of <strong>1 cent for every correct answer</strong>.</p>
 <p class="instructions-text">Press "Next" to begin observing rumors.</p>`);
 
   return instructionPages;
