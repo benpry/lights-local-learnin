@@ -15,7 +15,7 @@ const consentText = `<p class="consent-text" style="text-align: center"><strong>
 
 <p class="consent-text">Please save or print a copy of this page for your records.</p>
 
-<p class="consent-text">If you agree to participate in this research, please click “I agree” below.</p>`;
+<p class="consent-text">If you agree to participate in this research, please click "I agree" below.</p>`;
 
 const getInstructionPages = (condition) => {
   const instructionPages = [
