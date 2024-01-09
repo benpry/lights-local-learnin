@@ -1,6 +1,6 @@
 const consentText = `<p class="consent-text" style="text-align: center"><strong>CONSENT</strong></p>
 
-<p class="consent-text"><strong>DESCRIPTION:</strong> You are invited to participate in a research study on human reasoning. We will ask you to answer a series of questions in order to learn how people reason. You will be asked to think about problems and answer by pressing buttons or writing text. Participation in this research is voluntary, and you are free to withdraw your consent at any time.</p>
+<p class="consent-text"><strong>DESCRIPTION:</strong> You are invited to participate in a research study on human reasoning. We will ask you to answer a series of questions in order to learn how people reason. You will be asked to think about problems and answer by pressing buttons or writing text, and possibly explaining your reasoning into a microphone. Participation in this research is voluntary, and you are free to withdraw your consent at any time.</p>
 
 <p class="consent-text"><strong>TIME INVOLVEMENT:</strong> Your participation will take approximately 10 minutes.</p>
 
@@ -35,14 +35,34 @@ const getInstructionPages = (condition) => {
   }
   instructionPages[1] = instructionPages[1]
     .concat(`<p class="instructions-text">You will earn a bonus of <strong>1 cent for every correct answer</strong>.</p>
-<p class="instructions-text">Press "Next" to begin observing rumors.</p>`);
+`);
+
+  if (condition == "verbal-protocol") {
+    instructionPages.push(`<p class="instructions-text">When you are making predictions, please <strong>explain your reasoning aloud</strong> into your microphone.<p/>
+<p class="instructions-text">In the next page, we will ask for permission to use your microphone and you will be able to select which recording device you want to use.</p>`);
+  }
+
+  instructionPages[instructionPages.length - 1] = instructionPages[
+    instructionPages.length - 1
+  ].concat(
+    `<p class="instructions-text">Press "Next" to continue with the experiment.</p>`,
+  );
 
   return instructionPages;
 };
 
-const doneLearningPages = [
-  "<p class='instructions-text'>You have finished observing rumors. Press 'Next' to begin predicting who knows about new rumors.</p>",
-];
+const getDoneLearningPages = (condition) => {
+  const doneLearningPages = [
+    "<p class='instructions-text'>You have finished observing rumors. Press 'Next' to begin predicting who knows about new rumors.</p>",
+  ];
+  if (condition == "verbal-protocol") {
+    doneLearningPages[0] = doneLearningPages[0].concat(
+      "<p class='instructions-text'>Remember to explain your reasoning aloud as you make predictions.</p>",
+    );
+  }
+
+  return doneLearningPages;
+};
 
 const names = {
   A: "Alice",

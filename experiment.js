@@ -1,7 +1,7 @@
 const conditionNames = {
   0: "unspeeded",
   1: "speeded",
-  2: "scaffolded",
+  2: "verbal-protocol",
 };
 const trialDuration = 3000;
 
@@ -36,6 +36,15 @@ function compileTimeline(condition) {
     show_clickable_nav: true,
   };
 
+  const setupStages = [preLoad, consent, instructions];
+
+  if (condition == "verbal-protocol") {
+    const initMic = {
+      type: jsPsychInitializeMicrophone,
+    };
+    setupStages.push(initMic);
+  }
+
   // learning phase trials
   const learningTrials = trainStimuli.map((s) => {
     return {
@@ -48,7 +57,7 @@ function compileTimeline(condition) {
 
   const doneLearningMessage = {
     type: jsPsychInstructions,
-    pages: doneLearningPages,
+    pages: getDoneLearningPages(condition),
     show_clickable_nav: true,
     allow_previous: false,
   };
@@ -56,7 +65,10 @@ function compileTimeline(condition) {
   // test phase trials
   const testTrials = testStimuli.map((s) => {
     return {
-      type: jsPsychHtmlKeyboardResponse,
+      type:
+        condition == "verbal-protocol"
+          ? jsPsychHtmlKeyboardResponseAudioRecording
+          : jsPsychHtmlKeyboardResponse,
       stimulus: formatStimulus(s),
       choices: ["n", "y"],
       prompt: `<p>Press "y" for yes, "n" for no.</p>`,
@@ -98,9 +110,7 @@ function compileTimeline(condition) {
   shuffle(testTrials);
 
   return [
-    preLoad,
-    consent,
-    instructions,
+    ...setupStages,
     ...learningTrials,
     doneLearningMessage,
     ...testTrials,
@@ -113,7 +123,6 @@ const jsPsych = initJsPsych({
   on_finish: function (data) {
     proliferate.submit({
       trials: data.values(),
-      condition: "goofing around",
     });
   },
   display_element: "jspsych-target",
