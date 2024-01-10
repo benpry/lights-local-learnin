@@ -4,7 +4,7 @@ const consentText = `<p class="consent-text" style="text-align: center"><strong>
 
 <p class="consent-text"><strong>TIME INVOLVEMENT:</strong> Your participation will take approximately 10 minutes.</p>
 
-<p class="consent-text"><strong>PAYMENTS:</strong> You will receive $1.70 as payment for your participation, as well as a bonus of up to $0.40 depending on your performance.</p>
+<p class="consent-text"><strong>PAYMENTS:</strong> You will receive $3.00 as payment for your participation, as well as a bonus of up to $0.40 depending on your performance.</p>
 
 <p class="consent-text"><strong>PRIVACY AND CONFIDENTIALITY:</strong> The risks associated with this study are minimal. Study data will be stored securely, in compliance with Stanford University standards, minimizing the risk of confidentiality breach. Your individual privacy will be maintained during the research and in all published and written data resulting from the study.</p>
 

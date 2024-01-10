@@ -128,7 +128,6 @@ const jsPsych = initJsPsych({
       trials: data.values(),
     });
   },
-  display_element: "jspsych-target",
 });
 
 const conditionInt = jsPsych.data.getURLVariable("condition");
