@@ -71,7 +71,10 @@ function compileTimeline(condition) {
           : jsPsychHtmlKeyboardResponse,
       stimulus: formatStimulus(s),
       choices: ["n", "y"],
-      prompt: `<p>Press "y" for yes, "n" for no.</p>`,
+      prompt:
+        condition == "verbal-protocol"
+          ? ` <p>Press "y" for yes, "n" for no. Please describe your thinking aloud.</p>`
+          : `<p>Press "y" for yes, "n" for no.</p>`,
       on_load: condition == "speeded" ? startTimer : null,
       trial_duration: condition == "speeded" ? trialDuration : null,
     };
@@ -80,7 +83,7 @@ function compileTimeline(condition) {
   const postExperimentSurvey = {
     type: jsPsychSurveyText,
     preamble:
-      "You have reached the end of the experiment! The experiment will be over after this survey.",
+      "<p>You have reached the end of the experiment!</p><p>You will be redirected to Prolific after this survey. Please do not navigate away from this page.</p>",
     questions: [
       {
         prompt:

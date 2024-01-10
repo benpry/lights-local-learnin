@@ -38,7 +38,7 @@ const getInstructionPages = (condition) => {
 `);
 
   if (condition == "verbal-protocol") {
-    instructionPages.push(`<p class="instructions-text">When you are making predictions, please <strong>explain your reasoning aloud</strong> into your microphone.<p/>
+    instructionPages.push(`<p class="instructions-text">When you are making predictions, please <strong>describe your thinking aloud</strong> into your microphone. Your voice will only be recorded in the second phase of the experiment, when you are making predictions. You will not be recorded while you are observing rumors.<p/>
 <p class="instructions-text">In the next page, we will ask for permission to use your microphone and you will be able to select which recording device you want to use.</p>`);
   }
 
