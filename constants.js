@@ -59,8 +59,10 @@ const getInstructionPages = (condition) => {
 `);
 
   if (condition == "verbal-protocol") {
-    instructionPages.push(`<p>When you are making predictions, please <strong>describe your thinking aloud</strong> into your microphone. Your voice will only be recorded in the second phase of the experiment, when you are making predictions. You will not be recorded while you are observing lights.<p/>
-<p>In the next page, we will ask for permission to use your microphone and you will be able to select which recording device you want to use.</p>`);
+    instructionPages.push(`<div class="instructions">
+<p>When you are making predictions, please <strong>describe your thinking aloud</strong> into your microphone. Your voice will only be recorded in the prediction phase, not the learning phase.<p/>
+<p>In the next page, we will ask for permission to use your microphone and you will be able to select which recording device you want to use.</p>
+</div>`);
   }
 
   instructionPages[instructionPages.length - 1] = instructionPages[
