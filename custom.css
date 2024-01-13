@@ -45,12 +45,12 @@
     width: 200px;
 }
 
-.instructions-text {
+.instructions, .instructions img {
   width: 60ch;
   text-align: justify;
 }
 
 .consent-text {
-  width: 80ch;
+  width: 80ch !important;
   text-align: justify;
 }

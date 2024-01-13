@@ -41,7 +41,7 @@ function formatStimulus(s) {
   for (const [key, value] of Object.entries(s)) {
     stimulusString = stimulusString.replace(
       `%TRUTH${i}%`,
-      value === 1 ? "yes" : value === 0 ? "no" : "question-mark",
+      value === 1 ? "on" : value === 0 ? "off" : "question-mark",
     );
     i++;
   }

@@ -1,10 +1,16 @@
+// I heard you like constants so here are some constants for defining your constants
+const basePayment = "3.00";
+const bonusPerCorrectAnswerCents = 1;
+const maxBonus = "0.40";
+const speededTimeSeconds = 3;
+
 const consentText = `<p class="consent-text" style="text-align: center"><strong>CONSENT</strong></p>
 
 <p class="consent-text"><strong>DESCRIPTION:</strong> You are invited to participate in a research study on human reasoning. We will ask you to answer a series of questions in order to learn how people reason. You will be asked to think about problems and answer by pressing buttons or writing text, and possibly explaining your reasoning into a microphone. Participation in this research is voluntary, and you are free to withdraw your consent at any time.</p>
 
 <p class="consent-text"><strong>TIME INVOLVEMENT:</strong> Your participation will take approximately 10 minutes.</p>
 
-<p class="consent-text"><strong>PAYMENTS:</strong> You will receive $3.00 as payment for your participation, as well as a bonus of up to $0.40 depending on your performance.</p>
+<p class="consent-text"><strong>PAYMENTS:</strong> You will receive $${basePayment} as payment for your participation, as well as a bonus of up to $${maxBonus} depending on your performance.</p>
 
 <p class="consent-text"><strong>PRIVACY AND CONFIDENTIALITY:</strong> The risks associated with this study are minimal. Study data will be stored securely, in compliance with Stanford University standards, minimizing the risk of confidentiality breach. Your individual privacy will be maintained during the research and in all published and written data resulting from the study.</p>
 
@@ -19,82 +25,89 @@ const consentText = `<p class="consent-text" style="text-align: center"><strong>
 
 const getInstructionPages = (condition) => {
   const instructionPages = [
-    `<p class='instructions-text'>This is an experiment investigating how people learn and reason. In the experiment there is a population of five people: Alice, Bob, Charlie, Daniel, and Eve. Many rumors spread among these people.</p>
-    <p class='instructions-text'>Some people talk with each other a lot and other people never talk with each other, so <strong>knowing whether one person knows about a rumor tells you about who else knows about it</strong>. Your job is to learn the pattern of who shares information with whom from these rumors.</p>
-    <p class='instructions-text'>For each rumor, you will see a pair of people and whether they know about the rumor or not. Here is an example of observing a rumor:</p>
-    <img src="assets/example-rumor.png" style="width: 500px">`,
-    `<p class='instructions-text'>After observing some rumors, you will be tested on new rumors. You will see whether one person knows about a rumor and be asked to predict whether another person knows about it. Here is an example of being asked to predict whether someone knows about a rumor:</p>
-    <img src="assets/example-test.png" style="width: 500px">
-    <p class="instructions-text">You should press "y" if you think the person with the question mark over their head knows the rumor and "n" if you think they do not.</p>`,
+    `
+<div class="instructions">
+<p>This is an experiment on human learning and reasoning. You will learn about a machine with 5 lights and make predictions about how it behaves.</p>
+    <p>The machine has five lights of different colors. The lights are connected to each other with the following structure:</p>
+    <img src="assets/connection-structure.svg">
+    <p>Red and Green are connected, Yellow and Purple are connected, Yellow and Blue are connected, and Blue and Purple are connected.</p>
+    <p>When two lights are connected, they might support each other or they might inhibit each other:</p>
+    <p>When lights support each other, they tend to be either on or off at the same time. Here is an example of two lights that support each other: they are both on at the same time.</p>
+    <img style="width:40ch;margin:0 100px;" src="assets/supporting-example.png">
+    <p>When lights inhibit each other, one light tends to be off when the other is on. Here is an example of two lights that inhibit each other:</p>
+    <img style="width:40ch;margin:0 100px;" src="assets/inhibiting-example.png">
+    <p>These are just examples of what you might see. They don't tell you anything about the behavior of the machine in the main experiment.</p>
+</div>
+`,
+    `
+<div class="instructions">
+  <p>The experiment has two phases: a learning phase and a prediction phase.</p>
+  <p>In the learning phase, you will see pairs and whether they are on or off at a particular time. You will only see pairs of lights that are directly connected to each other.</p>
+  <p>In the prediction phase you will have to make predictions about all pairs of lights, including ones that you didn't see together in the learning phase. For example, you might need to predict whether Blue on given that the red light is on.</p>
+  <img style="width:40ch;margin:0 100px;" src="assets/example-query.png">
+</div>
+`,
   ];
 
   if (condition == "speeded") {
     instructionPages[1] = instructionPages[1].concat(
-      "<p class='instructions-text'>You will only have <strong>3 seconds</strong> to answer to each question, so you should make sure to answer quickly.</p>",
+      `<p>You will only have <strong>${speededTimeSeconds} seconds</strong> to answer to each question, so you should make sure to answer quickly.</p>`,
     );
   }
   instructionPages[1] = instructionPages[1]
-    .concat(`<p class="instructions-text">You will earn a bonus of <strong>1 cent for every correct answer</strong>.</p>
+    .concat(`<p>You will earn a bonus of <strong>${bonusPerCorrectAnswerCents} cent for every correct prediction</strong>.</p>
 `);
 
   if (condition == "verbal-protocol") {
-    instructionPages.push(`<p class="instructions-text">When you are making predictions, please <strong>describe your thinking aloud</strong> into your microphone. Your voice will only be recorded in the second phase of the experiment, when you are making predictions. You will not be recorded while you are observing rumors.<p/>
-<p class="instructions-text">In the next page, we will ask for permission to use your microphone and you will be able to select which recording device you want to use.</p>`);
+    instructionPages.push(`<p>When you are making predictions, please <strong>describe your thinking aloud</strong> into your microphone. Your voice will only be recorded in the second phase of the experiment, when you are making predictions. You will not be recorded while you are observing lights.<p/>
+<p>In the next page, we will ask for permission to use your microphone and you will be able to select which recording device you want to use.</p>`);
   }
 
   instructionPages[instructionPages.length - 1] = instructionPages[
     instructionPages.length - 1
-  ].concat(
-    `<p class="instructions-text">Press "Next" to continue with the experiment.</p>`,
-  );
+  ].concat(`<p>Press "Next" to continue with the experiment.</p>`);
 
   return instructionPages;
 };
 
 const getDoneLearningPages = (condition) => {
-  const doneLearningPages = [
-    "<p class='instructions-text'>You have finished observing rumors. Press 'Next' to begin predicting who knows about new rumors.</p>",
-  ];
+  let doneLearningMessage = `<div class='instructions'>
+    <p>You have finished observing lights. Press 'Next' to begin making predictions about new pairs of lights.</p>`;
   if (condition == "verbal-protocol") {
-    doneLearningPages[0] = doneLearningPages[0].concat(
+    doneLearningMessage = doneLearningMessage.concat(
       "<p class='instructions-text'>Remember to explain your reasoning aloud as you make predictions.</p>",
     );
   }
+  doneLearningMessage = doneLearningMessage.concat("</div>");
 
-  return doneLearningPages;
+  return [doneLearningMessage];
 };
 
 const names = {
-  A: "Alice",
-  B: "Bob",
-  C: "Charlie",
-  D: "David",
-  E: "Eve",
+  A: "Red",
+  B: "Green",
+  C: "Yellow",
+  D: "Blue",
+  E: "Purple",
 };
 
 const stimulusSentences = {
-  1: "%NAME% knows about this rumor.",
-  0: "%NAME% does not know about this rumor.",
-  "?": "Does %NAME% know about this rumor?",
+  1: "%NAME% is on.",
+  0: "%NAME% is off.",
+  "?": "Is %NAME% on or off?",
 };
 
 const stimulusTemplate = `
 <div class="stimulus">
-  <p>There's a rumor going around...</p>
+  <p>You observe two lights on the machine.</p>
   <div class="stimulus-wrapper">
     <div class="top-left">%TEXT1%</div>
     <div class="top-right">%TEXT2%</div>
-    <div class="mid-left">
-      <img src="assets/%TRUTH1%.png">
-    </div>
-    <div class="mid-right">
-      <img src="assets/%TRUTH2%.png">
-    </div>
     <div class="bottom-left">
-      <img src="assets/%NAME1%.png">
+      <img src="assets/%NAME1%-%TRUTH1%.svg">
     </div>
     <div class="bottom-right">
-      <img src="assets/%NAME2%.png">
+      <img src="assets/%NAME2%-%TRUTH2%.svg">
     </div>
   </div>
 </div>

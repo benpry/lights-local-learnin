@@ -10,16 +10,24 @@ function compileTimeline(condition) {
   const preLoad = {
     type: jsPsychPreload,
     images: [
-      "assets/alice.png",
-      "assets/bob.png",
-      "assets/charlie.png",
-      "assets/david.png",
-      "assets/eve.png",
-      "assets/yes.png",
-      "assets/no.png",
-      "assets/question-mark.png",
-      "assets/example-rumor.png",
-      "assets/example-test.png",
+      "assets/red-off.svg",
+      "assets/red-on.svg",
+      "assets/red-question-mark.svg",
+      "assets/green-off.svg",
+      "assets/green-on.svg",
+      "assets/green-question-mark.svg",
+      "assets/purple-off.svg",
+      "assets/purple-on.svg",
+      "assets/purple-question-mark.svg",
+      "assets/blue-off.svg",
+      "assets/blue-on.svg",
+      "assets/blue-question-mark.svg",
+      "assets/yellow-off.svg",
+      "assets/yellow-on.svg",
+      "assets/yellow-question-mark.svg",
+      "assets/inhibiting-example.png",
+      "assets/supporting-example.png",
+      "assets/example-query.png",
     ],
   };
 
@@ -70,11 +78,11 @@ function compileTimeline(condition) {
           ? jsPsychHtmlKeyboardResponseAudioRecording
           : jsPsychHtmlKeyboardResponse,
       stimulus: formatStimulus(s),
-      choices: ["n", "y"],
+      choices: ["0", "1"],
       prompt:
         condition == "verbal-protocol"
-          ? ` <p>Press "y" for yes, "n" for no. Please describe your thinking aloud.</p>`
-          : `<p>Press "y" for yes, "n" for no.</p>`,
+          ? ` <p>Press 0 for off, 1 for on. Please describe your thinking aloud.</p>`
+          : `<p>Press 0 for off, 1 for on.</p>`,
       on_load: condition == "speeded" ? startTimer : null,
       trial_duration: condition == "speeded" ? trialDuration : null,
     };
@@ -93,10 +101,10 @@ function compileTimeline(condition) {
         name: "strategy",
       },
       {
-        prompt: "What did you think this experiment was about?",
+        prompt: "Were any of the instructions unclear?",
         rows: 6,
         columns: 50,
-        name: "about",
+        name: "instructions",
       },
       {
         prompt:
