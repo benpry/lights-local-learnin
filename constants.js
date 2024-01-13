@@ -27,11 +27,11 @@ const getInstructionPages = (condition) => {
   const instructionPages = [
     `
 <div class="instructions">
-<p>This is an experiment on human learning and reasoning. You will learn about a machine with 5 lights and make predictions about how it behaves.</p>
+<p>This is an experiment on human learning and reasoning. You will learn about a machine and make predictions about how it behaves.</p>
     <p>The machine has five lights of different colors. The lights are connected to each other with the following structure:</p>
     <img src="assets/connection-structure.svg">
-    <p>Red and Green are connected, Yellow and Purple are connected, Yellow and Blue are connected, and Blue and Purple are connected.</p>
-    <p>When two lights are connected, they might support each other or they might inhibit each other:</p>
+    <p>Red and Green are connected, Green and Yellow are connected, Yellow and Blue are connected, and Blue and Purple are connected. You will be able to see this diagram throughout the experiment to help you remember the connection structure.</p>
+    <p>When two lights are connected, they might <strong>support</strong> each other or they might <strong>inhibit</strong> each other:</p>
     <p>When lights support each other, they tend to be either on or off at the same time. Here is an example of two lights that support each other: they are both on at the same time.</p>
     <img style="width:40ch;margin:0 100px;" src="assets/supporting-example.png">
     <p>When lights inhibit each other, one light tends to be off when the other is on. Here is an example of two lights that inhibit each other:</p>
@@ -41,9 +41,9 @@ const getInstructionPages = (condition) => {
 `,
     `
 <div class="instructions">
-  <p>The experiment has two phases: a learning phase and a prediction phase.</p>
-  <p>In the learning phase, you will see pairs and whether they are on or off at a particular time. You will only see pairs of lights that are directly connected to each other.</p>
-  <p>In the prediction phase you will have to make predictions about all pairs of lights, including ones that you didn't see together in the learning phase. For example, you might need to predict whether Blue on given that the red light is on.</p>
+  <p>The experiment has two phases: a <strong>learning</strong> phase and a <strong>prediction phase</strong>.</p>
+  <p>In the learning phase, you will see pairs of lights and whether they are on or off at a particular time. You will only see pairs of lights that are directly connected to each other.</p>
+  <p>In the prediction phase you will have to make predictions about <strong>all pairs of lights</strong>, including ones that you didn't see together in the learning phase. For example, you might need to predict whether Blue is on or off given that Red is on:</p>
   <img style="width:40ch;margin:0 100px;" src="assets/example-query.png">
 </div>
 `,
@@ -72,7 +72,9 @@ const getInstructionPages = (condition) => {
 
 const getDoneLearningPages = (condition) => {
   let doneLearningMessage = `<div class='instructions'>
-    <p>You have finished observing lights. Press 'Next' to begin making predictions about new pairs of lights.</p>`;
+    <p>You have finished observing lights. Press 'Next' to begin making predictions about new pairs of lights.</p>
+<p>When making predictions, press 1 if you think the light will be on and 0 if you think it will be off.</p>
+`;
   if (condition == "verbal-protocol") {
     doneLearningMessage = doneLearningMessage.concat(
       "<p class='instructions-text'>Remember to explain your reasoning aloud as you make predictions.</p>",
@@ -99,7 +101,8 @@ const stimulusSentences = {
 
 const stimulusTemplate = `
 <div class="stimulus">
-  <p>You observe two lights on the machine.</p>
+  <img style="width:400px;" src="assets/connection-structure.svg">
+  <p>You observe two lights.</p>
   <div class="stimulus-wrapper">
     <div class="top-left">%TEXT1%</div>
     <div class="top-right">%TEXT2%</div>
