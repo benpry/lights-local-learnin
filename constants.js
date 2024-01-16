@@ -1,5 +1,5 @@
 // I heard you like constants so here are some constants for defining your constants
-const basePayment = "3.00";
+const basePayment = "2.00";
 const bonusPerCorrectAnswerCents = 1;
 const maxBonus = "0.40";
 const speededTimeSeconds = 3;
@@ -45,18 +45,18 @@ const getInstructionPages = (condition) => {
   <p>In the learning phase, you will see pairs of lights and whether they are on or off at a particular time. You will only see pairs of lights that are directly connected to each other.</p>
   <p>In the prediction phase you will have to make predictions about <strong>all pairs of lights</strong>, including ones that you didn't see together in the learning phase. For example, you might need to predict whether Blue is on or off given that Red is on:</p>
   <img style="width:40ch;margin:0 100px;" src="assets/example-query.png">
-</div>
 `,
   ];
 
   if (condition == "speeded") {
     instructionPages[1] = instructionPages[1].concat(
-      `<p>You will only have <strong>${speededTimeSeconds} seconds</strong> to answer to each question, so you should make sure to answer quickly.</p>`,
+      `<p>You will only have <strong>${speededTimeSeconds} seconds</strong> to answer to each question.</p>`,
     );
   }
-  instructionPages[1] = instructionPages[1]
-    .concat(`<p>You will earn a bonus of <strong>${bonusPerCorrectAnswerCents} cent for every correct prediction</strong>.</p>
-`);
+  instructionPages[1] = instructionPages[1].concat(
+    `<p>You will earn a bonus of <strong>${bonusPerCorrectAnswerCents} cent for every correct prediction</strong>.</p>
+</div>`,
+  );
 
   if (condition == "verbal-protocol") {
     instructionPages.push(`<div class="instructions">
@@ -80,6 +80,11 @@ const getDoneLearningPages = (condition) => {
   if (condition == "verbal-protocol") {
     doneLearningMessage = doneLearningMessage.concat(
       "<p class='instructions-text'>Remember to explain your reasoning aloud as you make predictions.</p>",
+    );
+  }
+  if (condition == "speeded") {
+    doneLearningMessage = doneLearningMessage.concat(
+      `<p class='instructions-text'>Remember that you will have ${speededTimeSeconds} seconds to answer each question. If you do not answer in 3 seconds, the experiment will move on to the next question.</p>`,
     );
   }
   doneLearningMessage = doneLearningMessage.concat("</div>");
