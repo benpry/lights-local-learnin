@@ -1,7 +1,7 @@
 // I heard you like constants so here are some constants for defining your constants
 const basePayment = "2.00";
 const bonusPerCorrectAnswerCents = 1;
-const maxBonus = "0.40";
+const maxBonus = "$1.00";
 const speededTimeSeconds = 3;
 
 const consentText = `<p class="consent-text" style="text-align: center"><strong>CONSENT</strong></p>
@@ -10,7 +10,7 @@ const consentText = `<p class="consent-text" style="text-align: center"><strong>
 
 <p class="consent-text"><strong>TIME INVOLVEMENT:</strong> Your participation will take approximately 10 minutes.</p>
 
-<p class="consent-text"><strong>PAYMENTS:</strong> You will receive $${basePayment} as payment for your participation, as well as a bonus of up to $${maxBonus} depending on your performance.</p>
+<p class="consent-text"><strong>PAYMENTS:</strong> You will receive $${basePayment} as payment for your participation, as well as a bonus of up to ${maxBonus} depending on your performance.</p>
 
 <p class="consent-text"><strong>PRIVACY AND CONFIDENTIALITY:</strong> The risks associated with this study are minimal. Study data will be stored securely, in compliance with Stanford University standards, minimizing the risk of confidentiality breach. Your individual privacy will be maintained during the research and in all published and written data resulting from the study.</p>
 
@@ -42,17 +42,12 @@ const getInstructionPages = (condition) => {
     `
 <div class="instructions">
   <p>The experiment has two phases: a <strong>learning</strong> phase and a <strong>prediction phase</strong>.</p>
-  <p>In the learning phase, you will see pairs of lights and whether they are on or off at a particular time. You will only see pairs of lights that are directly connected to each other.
-  <p>When you see a pair of lights in the learning phase, you should press the key of the <strong>first letter</strong> of the light on the left, then a <strong>1 if it is on or a 0 if it is off</strong>. Then, you should do the same for the light on the right. For example, if you see the blue light on and the purple light off, you should press <strong>"b1p0"</strong>.</p>
-  <p>In the prediction phase you will have to make predictions about <strong>all pairs of lights</strong>, including ones that you didn't see together in the learning phase. For example, you might need to predict whether Blue is on or off given that Red is on:</p>
+  <p>In the learning phase, you will see pairs of lights that are next to each other and be asked to predict whether one light is on or off given the value of another. After making each prediction, you will get feedback on whether your prediction was right or not. This phase will repeat until you are at least 90% accurate at making predictions.</p>
+  <p>In the prediction phase you will have to make predictions about <strong>all pairs of lights</strong>, including ones that you didn't see together in the learning phase. You will not get feedback on your predictions in this phase. For example, you might need to predict whether Blue is on or off given that Red is on:</p>
   <img style="width:40ch;margin:0 100px;" src="assets/example-query.png">
-`,
-  ];
-
-  instructionPages[1] = instructionPages[1].concat(
-    `<p>You will earn a bonus of <strong>${bonusPerCorrectAnswerCents} cent for every correct prediction</strong>.</p>
+  <p>A random trial in the learning phase has been chosen to be the <strong>bonus trial</strong>. If you get the correct answer on the bonus trial, you will earn a bonus of ${maxBonus}.</p>
 </div>`,
-  );
+  ];
 
   if (condition == "verbal-protocol") {
     instructionPages.push(`<div class="instructions">
@@ -70,8 +65,7 @@ const getInstructionPages = (condition) => {
 
 const getDoneLearningPages = (condition) => {
   let doneLearningMessage = `<div class='instructions'>
-    <p>You have finished observing lights. Press 'Next' to begin making predictions about new pairs of lights.</p>
-<p>When making predictions, press 1 if you think the light will be on and 0 if you think it will be off.</p>
+    <p>You have completed the learning phase. Now, you will start making predictions about new pairs of lights.</p>
 `;
   if (condition == "verbal-protocol") {
     doneLearningMessage = doneLearningMessage.concat(
@@ -84,12 +78,10 @@ const getDoneLearningPages = (condition) => {
       `<p>You will only have <strong>${speededTimeSeconds} seconds</strong> to answer to each question. If you do not answer in 3 seconds, the experiment will move on to the next question.</p>`,
     );
   }
-  if (condition == "speeded") {
-    doneLearningMessage = doneLearningMessage.concat(
-      `<p class='instructions-text'>Remember that you will have ${speededTimeSeconds} seconds to answer each question. If you do not answer in 3 seconds, the experiment will move on to the next question.</p>`,
-    );
-  }
-  doneLearningMessage = doneLearningMessage.concat("</div>");
+  doneLearningMessage = doneLearningMessage.concat(
+    `<p>Press 'Next' to begin making predictions about new pairs of lights.</p>
+  </div>`,
+  );
 
   return [doneLearningMessage];
 };
