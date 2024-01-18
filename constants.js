@@ -1,5 +1,5 @@
 // I heard you like constants so here are some constants for defining your constants
-const basePayment = "2.00";
+const basePayment = "$2.00";
 const bonusPerCorrectAnswerCents = 1;
 const maxBonus = "$1.00";
 const speededTimeSeconds = 3;
@@ -10,7 +10,7 @@ const consentText = `<p class="consent-text" style="text-align: center"><strong>
 
 <p class="consent-text"><strong>TIME INVOLVEMENT:</strong> Your participation will take approximately 10 minutes.</p>
 
-<p class="consent-text"><strong>PAYMENTS:</strong> You will receive $${basePayment} as payment for your participation, as well as a bonus of up to ${maxBonus} depending on your performance.</p>
+<p class="consent-text"><strong>PAYMENTS:</strong> You will receive ${basePayment} as payment for your participation, as well as a bonus of up to ${maxBonus} depending on your performance.</p>
 
 <p class="consent-text"><strong>PRIVACY AND CONFIDENTIALITY:</strong> The risks associated with this study are minimal. Study data will be stored securely, in compliance with Stanford University standards, minimizing the risk of confidentiality breach. Your individual privacy will be maintained during the research and in all published and written data resulting from the study.</p>
 
@@ -31,7 +31,7 @@ const getInstructionPages = (condition) => {
     <p>The machine has five lights of different colors. The lights are connected to each other with the following structure:</p>
     <img src="assets/connection-structure.svg">
     <p>Red and Green are connected, Green and Yellow are connected, Yellow and Blue are connected, and Blue and Purple are connected. You will be able to see this diagram throughout the experiment to help you remember the connection structure.</p>
-    <p>When two lights are connected, they might <strong>support</strong> each other or they might <strong>inhibit</strong> each other:</p>
+    <p>When two lights are connected, they might <strong>support</strong> each other or they might <strong>inhibit</strong> each other.</p>
     <p>When lights support each other, they tend to be either on or off at the same time. Here is an example of two lights that support each other: they are both on at the same time.</p>
     <img style="width:40ch;margin:0 100px;" src="assets/supporting-example.png">
     <p>When lights inhibit each other, one light tends to be off when the other is on. Here is an example of two lights that inhibit each other:</p>
@@ -45,7 +45,7 @@ const getInstructionPages = (condition) => {
   <p>In the learning phase, you will see pairs of lights that are next to each other and be asked to predict whether one light is on or off given the value of another. After making each prediction, you will get feedback on whether your prediction was right or not. This phase will repeat until you are at least 90% accurate at making predictions.</p>
   <p>In the prediction phase you will have to make predictions about <strong>all pairs of lights</strong>, including ones that you didn't see together in the learning phase. You will not get feedback on your predictions in this phase. For example, you might need to predict whether Blue is on or off given that Red is on:</p>
   <img style="width:40ch;margin:0 100px;" src="assets/example-query.png">
-  <p>A random trial in the learning phase has been chosen to be the <strong>bonus trial</strong>. If you get the correct answer on the bonus trial, you will earn a bonus of ${maxBonus}.</p>
+  <p>A random trial in prediction phase will be the <strong>bonus trial</strong>. If you get the correct answer on the bonus trial, you will earn a bonus of ${maxBonus}.</p>
 </div>`,
   ];
 
@@ -58,7 +58,7 @@ const getInstructionPages = (condition) => {
 
   instructionPages[instructionPages.length - 1] = instructionPages[
     instructionPages.length - 1
-  ].concat(`<p>Press "Next" to continue with the experiment.</p>`);
+  ].concat(`<p>Press 'Next' to continue with the experiment.</p>`);
 
   return instructionPages;
 };
@@ -102,7 +102,7 @@ const stimulusSentences = {
 
 const stimulusTemplate = `
 <div class="stimulus">
-  <img style="width:400px;" src="assets/connection-structure.svg">
+  <img style="width:450px;" src="assets/connection-structure.svg">
   <p>You observe two lights.</p>
   <div class="stimulus-wrapper">
     <div class="top-left">%TEXT1%</div>

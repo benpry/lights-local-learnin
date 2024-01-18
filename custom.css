@@ -5,6 +5,11 @@
   grid-auto-rows: minmax(100px, auto):
 }
 
+.jspsych-survey-multi-choice-question {
+  max-width: 20ch;
+  margin: auto;
+}
+
 .top-left {
     grid-column: 1;
     grid-row: 1;

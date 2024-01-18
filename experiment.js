@@ -112,9 +112,6 @@ function compileTimeline(condition) {
       const learningTrials = data
         .values()
         .filter((x) => Object.hasOwn(x, "correctAnswer"));
-      const dataWithCorrectness = learningTrials.map((x) => {
-        return parseInt(x["response"]) == x["correctAnswer"];
-      });
       // loop again if the participant made more than one error
       return (
         learningTrials.filter(
@@ -140,7 +137,7 @@ function compileTimeline(condition) {
         condition == "verbal-protocol"
           ? jsPsychHtmlKeyboardResponseAudioRecording
           : jsPsychHtmlKeyboardResponse,
-      stimulus: formatStimulus(observedVar, s[observedVar], targetVar),
+      stimulus: formatStimulus(observedVar, s[observedVar], targetVar, "?"),
       choices: ["0", "1"],
       prompt:
         condition == "verbal-protocol"
