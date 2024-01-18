@@ -2,6 +2,7 @@ const conditionNames = {
   0: "unspeeded",
   1: "speeded",
   2: "verbal-protocol",
+  3: "test",
 };
 const trialDuration = 3000;
 
@@ -53,15 +54,75 @@ function compileTimeline(condition) {
     setupStages.push(initMic);
   }
 
-  // learning phase trials
-  const learningTrials = trainStimuli.map((s) => {
-    return {
+  const learningTrials = [
+    // make a prediction
+    {
       type: jsPsychHtmlKeyboardResponse,
-      stimulus: formatStimulus(s),
-      choices: [" "],
-      prompt: "<p>Press space to continue.</p>",
+      stimulus: function () {
+        return formatStimulus(
+          jsPsych.timelineVariable("observedVar"),
+          jsPsych.timelineVariable("observedVal"),
+          jsPsych.timelineVariable("targetVar"),
+          "?",
+        );
+      },
+      choices: ["0", "1"],
+      data: function () {
+        return { correctAnswer: jsPsych.timelineVariable("correctAnswer") };
+      },
+      prompt: "<p>Press 0 for off, 1 for on.</p>",
+    },
+    // get feedback
+    {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: function () {
+        const lastTrial = jsPsych.data.get().last(1).values()[0];
+        const lastTrialCorrect =
+          parseInt(lastTrial["response"]) == lastTrial["correctAnswer"];
+        return formatStimulus(
+          jsPsych.timelineVariable("observedVar"),
+          jsPsych.timelineVariable("observedVal"),
+          jsPsych.timelineVariable("targetVar"),
+          jsPsych.timelineVariable("correctAnswer"),
+          lastTrialCorrect,
+        );
+      },
+      choices: "ALL_KEYS",
+      prompt: "<p>Press any key to continue.</p>",
+    },
+  ];
+
+  const learningTimelineVariables = trainStimuli.map((s) => {
+    const observedVar = Object.keys(s)[0];
+    const targetVar = Object.keys(s)[1];
+    return {
+      observedVar: observedVar,
+      observedVal: s[observedVar],
+      targetVar: targetVar,
+      correctAnswer: s[targetVar],
     };
   });
+
+  const learningLoop = {
+    timeline: learningTrials,
+    timeline_variables: learningTimelineVariables,
+    randomize_order: true,
+    loop_function: function (data) {
+      // continue if fewer than 2 errors were made.
+      const learningTrials = data
+        .values()
+        .filter((x) => Object.hasOwn(x, "correctAnswer"));
+      const dataWithCorrectness = learningTrials.map((x) => {
+        return parseInt(x["response"]) == x["correctAnswer"];
+      });
+      // loop again if the participant made more than one error
+      return (
+        learningTrials.filter(
+          (x) => parseInt(x["response"]) != x["correctAnswer"],
+        ).length > 1 && condition != "test"
+      );
+    },
+  };
 
   const doneLearningMessage = {
     type: jsPsychInstructions,
@@ -72,12 +133,14 @@ function compileTimeline(condition) {
 
   // test phase trials
   const testTrials = testStimuli.map((s) => {
+    const observedVar = Object.keys(s)[0];
+    const targetVar = Object.keys(s)[1];
     return {
       type:
         condition == "verbal-protocol"
           ? jsPsychHtmlKeyboardResponseAudioRecording
           : jsPsychHtmlKeyboardResponse,
-      stimulus: formatStimulus(s),
+      stimulus: formatStimulus(observedVar, s[observedVar], targetVar),
       choices: ["0", "1"],
       prompt:
         condition == "verbal-protocol"
@@ -87,6 +150,21 @@ function compileTimeline(condition) {
       trial_duration: condition == "speeded" ? trialDuration : null,
     };
   });
+
+  const colorblindScreening = {
+    type: jsPsychSurveyMultiChoice,
+    preamble:
+      "<p>Please let us know if you are colorblind. Your response will not affect your compensation for this experiment.</p>",
+    questions: [
+      {
+        prompt: "Are you colorblind?",
+        options: ["Yes", "No"],
+        name: "colorblind",
+        required: true,
+      },
+    ],
+    name: "colorblind-screening",
+  };
 
   const postExperimentSurvey = {
     type: jsPsychSurveyText,
@@ -117,14 +195,14 @@ function compileTimeline(condition) {
     name: "strategy",
   };
 
-  shuffle(learningTrials);
   shuffle(testTrials);
 
   return [
     ...setupStages,
-    ...learningTrials,
+    learningLoop,
     doneLearningMessage,
     ...testTrials,
+    colorblindScreening,
     postExperimentSurvey,
   ];
 }

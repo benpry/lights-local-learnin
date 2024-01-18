@@ -42,17 +42,13 @@ const getInstructionPages = (condition) => {
     `
 <div class="instructions">
   <p>The experiment has two phases: a <strong>learning</strong> phase and a <strong>prediction phase</strong>.</p>
-  <p>In the learning phase, you will see pairs of lights and whether they are on or off at a particular time. You will only see pairs of lights that are directly connected to each other.</p>
+  <p>In the learning phase, you will see pairs of lights and whether they are on or off at a particular time. You will only see pairs of lights that are directly connected to each other.
+  <p>When you see a pair of lights in the learning phase, you should press the key of the <strong>first letter</strong> of the light on the left, then a <strong>1 if it is on or a 0 if it is off</strong>. Then, you should do the same for the light on the right. For example, if you see the blue light on and the purple light off, you should press <strong>"b1p0"</strong>.</p>
   <p>In the prediction phase you will have to make predictions about <strong>all pairs of lights</strong>, including ones that you didn't see together in the learning phase. For example, you might need to predict whether Blue is on or off given that Red is on:</p>
   <img style="width:40ch;margin:0 100px;" src="assets/example-query.png">
 `,
   ];
 
-  if (condition == "speeded") {
-    instructionPages[1] = instructionPages[1].concat(
-      `<p>You will only have <strong>${speededTimeSeconds} seconds</strong> to answer to each question.</p>`,
-    );
-  }
   instructionPages[1] = instructionPages[1].concat(
     `<p>You will earn a bonus of <strong>${bonusPerCorrectAnswerCents} cent for every correct prediction</strong>.</p>
 </div>`,
@@ -80,6 +76,12 @@ const getDoneLearningPages = (condition) => {
   if (condition == "verbal-protocol") {
     doneLearningMessage = doneLearningMessage.concat(
       "<p class='instructions-text'>Remember to explain your reasoning aloud as you make predictions.</p>",
+    );
+  }
+
+  if (condition == "speeded") {
+    doneLearningMessage = doneLearningMessage.concat(
+      `<p>You will only have <strong>${speededTimeSeconds} seconds</strong> to answer to each question. If you do not answer in 3 seconds, the experiment will move on to the next question.</p>`,
     );
   }
   if (condition == "speeded") {
@@ -119,6 +121,9 @@ const stimulusTemplate = `
     <div class="bottom-right">
       <img src="assets/%NAME2%-%TRUTH2%.svg">
     </div>
+  </div>
+  <div class="feedback">
+  %FEEDBACK%
   </div>
 </div>
 `;

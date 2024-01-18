@@ -26,34 +26,54 @@ function range(size, startAt = 0) {
   return [...Array(size).keys()].map((i) => i + startAt);
 }
 
-function formatStimulus(s) {
+function formatStimulus(
+  observedVar,
+  observedVal,
+  targetVar,
+  targetVal,
+  lastTrialCorrect,
+) {
   let stimulusString = stimulusTemplate;
-  let i = 1;
-  for (const [key, value] of Object.entries(s)) {
+  stimulusString = stimulusString.replace(
+    `%TEXT1%`,
+    stimulusSentences[observedVal].replace("%NAME%", names[observedVar]),
+  );
+  stimulusString = stimulusString.replace(
+    `%NAME1%`,
+    names[observedVar].toLowerCase(),
+  );
+  stimulusString = stimulusString.replace(
+    `%TRUTH1%`,
+    observedVal == 1 ? "on" : "off",
+  );
+  stimulusString = stimulusString.replace(
+    `%NAME2%`,
+    names[targetVar].toLowerCase(),
+  );
+  stimulusString = stimulusString.replace(
+    "%TEXT2%",
+    stimulusSentences["?"].replace("%NAME%", names[targetVar]),
+  );
+  stimulusString = stimulusString.replace(
+    `%TRUTH2%`,
+    targetVal == 1 ? "on" : targetVal == "?" ? "question-mark" : "off",
+  );
+  if (lastTrialCorrect === undefined) {
+    stimulusString = stimulusString.replace(`%FEEDBACK%`, "");
+  } else if (lastTrialCorrect) {
     stimulusString = stimulusString.replace(
-      `%TEXT${i}%`,
-      `<p>${stimulusSentences[value].replace("%NAME%", names[key])}</p>`,
+      `%FEEDBACK%`,
+      `<p class='feedback-correct'>Correct! ${stimulusSentences[
+        targetVal
+      ].replace("%NAME%", names[targetVar])}</p>`,
     );
-    i++;
-  }
-
-  i = 1;
-  for (const [key, value] of Object.entries(s)) {
+  } else {
     stimulusString = stimulusString.replace(
-      `%TRUTH${i}%`,
-      value === 1 ? "on" : value === 0 ? "off" : "question-mark",
+      `%FEEDBACK%`,
+      `<p class='feedback-incorrect'>Incorrect. ${stimulusSentences[
+        targetVal
+      ].replace("%NAME%", names[targetVar])}</p>`,
     );
-    i++;
   }
-
-  i = 1;
-  for (const [key, value] of Object.entries(s)) {
-    stimulusString = stimulusString.replace(
-      `%NAME${i}%`,
-      names[key].toLowerCase(),
-    );
-    i++;
-  }
-
   return stimulusString;
 }
