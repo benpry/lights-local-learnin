@@ -39,13 +39,23 @@ function compileTimeline(condition) {
     show_clickable_nav: true,
     button_label_next: "I agree",
   };
+
+  const browserCheck = {
+    type: jsPsychBrowserCheck,
+    inclusion_function: (browser) => {
+      return browser["browser"] == "chrome";
+    },
+    exclusion_message: () =>
+      `<p>This study only supports Google Chrome. You must use Chrome to complete the experiment.</p>`,
+  };
+
   const instructions = {
     type: jsPsychInstructions,
     pages: getInstructionPages(condition),
     show_clickable_nav: true,
   };
 
-  const setupStages = [preLoad, consent, instructions];
+  const setupStages = [preLoad, consent, browserCheck, instructions];
 
   if (condition == "verbal-protocol") {
     const initMic = {
