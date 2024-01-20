@@ -5,6 +5,7 @@ const conditionNames = {
   3: "test",
 };
 const trialDuration = 3000;
+let included = false;
 
 function compileTimeline(condition) {
   // pre-load stimuli
@@ -43,7 +44,10 @@ function compileTimeline(condition) {
   const browserCheck = {
     type: jsPsychBrowserCheck,
     inclusion_function: (browser) => {
-      return browser["browser"] == "chrome";
+      if (browser["browser"] == "chrome") {
+        included = true;
+      }
+      return included;
     },
     exclusion_message: () =>
       `<p>This study only supports Google Chrome. You must use Chrome to complete the experiment.</p>`,
@@ -217,9 +221,11 @@ function compileTimeline(condition) {
 // get the condition from the URL
 const jsPsych = initJsPsych({
   on_finish: function (data) {
-    proliferate.submit({
-      trials: data.values(),
-    });
+    if (included) {
+      proliferate.submit({
+        trials: data.values(),
+      });
+    }
   },
 });
 
