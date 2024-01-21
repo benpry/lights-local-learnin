@@ -2,7 +2,7 @@
 const basePayment = "$2.00";
 const bonusPerCorrectAnswerCents = 1;
 const maxBonus = "$1.00";
-const speededTimeSeconds = 3;
+const speededTimeSeconds = 5;
 
 const consentText = `<p class="consent-text" style="text-align: center"><strong>CONSENT</strong></p>
 
@@ -75,7 +75,7 @@ const getDoneLearningPages = (condition) => {
 
   if (condition == "speeded") {
     doneLearningMessage = doneLearningMessage.concat(
-      `<p>You will only have <strong>${speededTimeSeconds} seconds</strong> to answer to each question. If you do not answer in 3 seconds, the experiment will move on to the next question.</p>`,
+      `<p>You will only have <strong>${speededTimeSeconds} seconds</strong> to answer to each question. If you do not answer in ${speededTimeSeconds} seconds, the experiment will move on to the next question.</p>`,
     );
   }
   doneLearningMessage = doneLearningMessage.concat(
