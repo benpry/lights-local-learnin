@@ -4,7 +4,7 @@ const conditionNames = {
   2: "verbal-protocol",
   3: "test",
 };
-const trialDuration = 5000;
+const trialDuration = 10000;
 let included = false;
 
 function compileTimeline(condition) {

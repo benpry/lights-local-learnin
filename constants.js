@@ -2,7 +2,7 @@
 const basePayment = "$2.00";
 const bonusPerCorrectAnswerCents = 1;
 const maxBonus = "$1.00";
-const speededTimeSeconds = 5;
+const speededTimeSeconds = 10;
 
 const consentText = `<p class="consent-text" style="text-align: center"><strong>CONSENT</strong></p>
 
