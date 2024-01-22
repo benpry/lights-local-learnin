@@ -1,14 +1,14 @@
 /* The total length of the animation */
 @property --len {
   syntax: "<number>";
-  initial-value: 10;
+  initial-value: 5;
   inherits: true;
 }
 
 /* The current timestep */
 @property --t {
   syntax: "<number>";
-  initial-value: 10;
+  initial-value: 5;
   inherits: true;
 }
 /* won't be needed once Chrome supports round() */

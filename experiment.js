@@ -4,8 +4,9 @@ const conditionNames = {
   2: "verbal-protocol",
   3: "test",
 };
-const trialDuration = 10000;
+const trialDuration = 5000;
 let included = false;
+let succeededLastBlock = false;
 
 function compileTimeline(condition) {
   // pre-load stimuli
@@ -126,12 +127,18 @@ function compileTimeline(condition) {
       const learningTrials = data
         .values()
         .filter((x) => Object.hasOwn(x, "correctAnswer"));
-      // loop again if the participant made more than one error
-      return (
+      const succeededThisBlock =
         learningTrials.filter(
           (x) => parseInt(x["response"]) != x["correctAnswer"],
-        ).length > 1 && condition != "test"
-      );
+        ).length < 2 && condition != "test";
+
+      // loop again if the participant made more than 1 error in the last two blocks
+      const endLoop = succeededThisBlock && succeededLastBlock;
+
+      succeededLastBlock = succeededThisBlock;
+
+      // the loop function should return true if the loop should continue
+      return !endLoop;
     },
   };
 
