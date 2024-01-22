@@ -130,10 +130,11 @@ function compileTimeline(condition) {
       const succeededThisBlock =
         learningTrials.filter(
           (x) => parseInt(x["response"]) != x["correctAnswer"],
-        ).length < 2 && condition != "test";
+        ).length < 2;
 
       // loop again if the participant made more than 1 error in the last two blocks
-      const endLoop = succeededThisBlock && succeededLastBlock;
+      const endLoop =
+        (succeededThisBlock && succeededLastBlock) || condition == "test";
 
       succeededLastBlock = succeededThisBlock;
 
@@ -169,10 +170,10 @@ function compileTimeline(condition) {
     };
   });
 
-  const colorblindScreening = {
+  const endScreening = {
     type: jsPsychSurveyMultiChoice,
     preamble:
-      "<p>Please let us know if you are colorblind. Your response will not affect your compensation for this experiment.</p>",
+      "<p>Please respond to the following questions. Your responses will not affect your compensation for this experiment.</p>",
     questions: [
       {
         prompt: "Are you colorblind?",
@@ -180,8 +181,14 @@ function compileTimeline(condition) {
         name: "colorblind",
         required: true,
       },
+      {
+        prompt: "Did you take notes during the experiment?",
+        options: ["Yes", "No"],
+        name: "notes",
+        required: true,
+      },
     ],
-    name: "colorblind-screening",
+    name: "end-screening",
   };
 
   const postExperimentSurvey = {
@@ -220,7 +227,7 @@ function compileTimeline(condition) {
     learningLoop,
     doneLearningMessage,
     ...testTrials,
-    colorblindScreening,
+    endScreening,
     postExperimentSurvey,
   ];
 }
