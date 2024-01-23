@@ -45,6 +45,7 @@ const getInstructionPages = (condition) => {
   <p>In the learning phase, you will see pairs of lights that are next to each other and be asked to predict whether one light is on or off given the value of another. After making each prediction, you will get feedback on whether your prediction was right or not. This phase will repeat until you are at least 90% accurate for 32 predictions in a row.</p>
   <p>In the prediction phase you will have to make predictions about <strong>all pairs of lights</strong>, including ones that you didn't see together in the learning phase. You will not get feedback on your predictions in this phase. For example, you might need to predict whether Blue is on or off given that Red is on:</p>
   <img style="width:40ch;margin:0 100px;" src="assets/example-query.png">
+  <p>Please do not take notes or use them during this experiment.</p>
   <p>A random trial in prediction phase will be the <strong>bonus trial</strong>. If you get the correct answer on the bonus trial, you will earn a bonus of ${maxBonus}.</p>
 </div>`,
   ];
