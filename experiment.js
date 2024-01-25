@@ -8,7 +8,7 @@ const trialDuration = 5000;
 let included = false;
 let succeededLastBlock = false;
 
-function compileTimeline(condition) {
+function compileTimeline(condition, stimulusCondition) {
   // pre-load stimuli
   const preLoad = {
     type: jsPsychPreload,
@@ -107,7 +107,7 @@ function compileTimeline(condition) {
     },
   ];
 
-  const learningTimelineVariables = trainStimuli.map((s) => {
+  const learningTimelineVariables = trainStimuli[stimulusCondition].map((s) => {
     const observedVar = Object.keys(s)[0];
     const targetVar = Object.keys(s)[1];
     return {
@@ -245,7 +245,12 @@ const jsPsych = initJsPsych({
 
 const conditionInt = jsPsych.data.getURLVariable("condition");
 const condition = conditionNames[conditionInt];
+const stimulusCondition = jsPsych.data.getURLVariable("stimulusCondition");
+jsPsych.data.addProperties({
+  condition: condition,
+  stimulusCondition: stimulusCondition,
+});
 
-const timeline = compileTimeline(condition);
+const timeline = compileTimeline(condition, stimulusCondition);
 
 jsPsych.run(timeline);
